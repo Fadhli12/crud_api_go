@@ -18,8 +18,12 @@ type OutletsRepository struct {
 // List Query
 const (
 	Create = `INSERT INTO "outlets" (name,picture,address,longitude,latitude,brand_id) VALUES ($1,$2,$3,$4,$5,$6)`
-	List   = `SELECT id,name,picture,address,longitude,latitude,brand_id,created_at,updated_at FROM "outlets" ORDER BY created_at DESC`
-	Detail = `SELECT id,name,picture,address,longitude,latitude,brand_id,created_at,updated_at FROM "outlets" WHERE id = $1 LIMIT 1`
+	List   = `SELECT id,name,picture,address,longitude,latitude,brand_id,SQRT(POW(111.12 * (-6.1753924::float -  latitude::float), 2) + 
+    POW(111.12 * (longitude::float - 106.824964::float) * COS(-6.1753924::float / 92.215), 2)
+) as distance_km ,created_at,updated_at FROM "outlets" ORDER BY distance_km ASC`
+	Detail = `SELECT id,name,picture,address,longitude,latitude,brand_id,SQRT(POW(111.12 * (-6.1753924::float -  latitude::float), 2) + 
+    POW(111.12 * (longitude::float - 106.824964::float) * COS(-6.1753924::float / 92.215), 2)
+) as distance_km ,created_at,updated_at FROM "outlets" WHERE id = $1 LIMIT 1`
 	Update = `UPDATE "outlets" SET name = $1, picture = $2, address = $3, longitude = $4, latitude = $5, brand_id = $6, updated_at = $7 WHERE id = $8`
 	Delete = `DELETE FROM "outlets" WHERE id = $1`
 )
@@ -62,6 +66,7 @@ func (r *OutletsRepository) List(ctx context.Context) ([]*entity.Outlets, error)
 			&outlet.Longitude,
 			&outlet.Latitude,
 			&outlet.BrandId,
+			&outlet.DistanceKm,
 			&CreatedAt,
 			&UpdatedAt,
 		); err != nil {
@@ -90,6 +95,7 @@ func (r *OutletsRepository) Detail(ctx context.Context, outlet *entity.Outlets) 
 		&result.Longitude,
 		&result.Latitude,
 		&result.BrandId,
+		&result.DistanceKm,
 		&CreatedAt,
 		&UpdatedAt,
 	); err != nil {
