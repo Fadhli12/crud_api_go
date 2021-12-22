@@ -4,6 +4,8 @@ import (
 	"crud_api_go/brands"
 	"crud_api_go/config"
 	"crud_api_go/migrations"
+	"crud_api_go/outlets"
+	"crud_api_go/products"
 	"crud_api_go/utilities"
 	"flag"
 	"github.com/gorilla/mux"
@@ -22,6 +24,7 @@ var (
 func main() {
 	flag.Parse()
 	utilities.Logs()
+	config.Environment()
 	if *version > 0 {
 		if err := migrations.Migration(&config.Config.PostgreSQL, *version); err != nil {
 			utilities.Logger.Panic(err)
@@ -37,6 +40,8 @@ func main() {
 	routes.Use(utilities.LogsMiddleware)
 
 	brands.Routes(routes, config.PostgreConn)
+	outlets.Routes(routes, config.PostgreConn)
+	products.Routes(routes, config.PostgreConn)
 
 	portStr := strconv.Itoa(*port)
 	srv := &http.Server{

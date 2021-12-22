@@ -9,5 +9,6 @@ const (
 	LogoRequired      = "Logo cannot be empty"
 	BannerRequired    = "Banner cannot be empty"
 	PictureRequired   = "Picture cannot be empty"
+	BrandIdRequired   = "Brand ID cannot be empty"
 	ResponseSuccess   = "Success"
 )

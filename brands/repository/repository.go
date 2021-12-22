@@ -18,7 +18,7 @@ type BrandsRepository struct {
 // List Query
 const (
 	Create = `INSERT INTO "brands" (name,logo,banner) VALUES ($1,$2,$3)`
-	List   = `SELECT id,name,logo,banner,created_at,updated_at FROM "brands" ORDER BY rating DESC`
+	List   = `SELECT id,name,logo,banner,created_at,updated_at FROM "brands" ORDER BY created_at DESC`
 	Detail = `SELECT id,name,logo,banner,created_at,updated_at FROM "brands" WHERE id = $1 LIMIT 1`
 	Update = `UPDATE "brands" SET name = $1, logo = $2, banner = $3, updated_at = $4 WHERE id = $5`
 	Delete = `DELETE FROM "brands" WHERE id = $1`

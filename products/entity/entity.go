@@ -1,12 +1,15 @@
 package entity
 
-import "time"
+import (
+	"time"
+)
 
-type Brands struct {
+type Products struct {
 	ID        int       `json:"id"`
 	Name      string    `json:"name"`
-	Logo      string    `json:"logo"`
-	Banner    string    `json:"banner"`
+	Picture   string    `json:"picture"`
+	Price     int       `json:"price"`
+	BrandId   int       `json:"brand_id"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdateAt  time.Time `json:"updated_at"`
 }
