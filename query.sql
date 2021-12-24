@@ -9,4 +9,5 @@ select brands.name,
             POW(111.12 * (outlets.longitude::float - 106.824964::float) * COS(-6.1753924::float / 92.215), 2)
            )                                                                      as distance_outlet_from_monas
 from outlets
-         join brands on outlets.brand_id = brands.id;
+         join brands on outlets.brand_id = brands.id
+order by distance_outlet_from_monas ASC;
